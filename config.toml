@@ -2,5 +2,10 @@ host = "0.0.0.0"
 port = 8282
 
 [database]
-type = "sqlite"
-path = "/app/data/syncyomi.db"
+type = "postgres"
+host = "dpg-dao08t2jnfac73a45lbg-a"
+port = 5432
+user = "syncyomi_storage_user"
+password = "p5zSvR7mQiIio6gzFhWUzaxFm5chz2My"
+name = "syncyomi_storage"
+ssl_mode = "disable"
