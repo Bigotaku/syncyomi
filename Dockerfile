@@ -46,21 +46,22 @@ FROM alpine:3.24
 
 LABEL org.opencontainers.image.source="https://github.com/SyncYomi/SyncYomi"
 
-ENV HOME="/config" \
-    XDG_CONFIG_HOME="/config" \
-    XDG_DATA_HOME="/config"
+ENV HOME="/app" \
+    XDG_CONFIG_HOME="/app/config" \
+    XDG_DATA_HOME="/app/data"
 
 RUN apk add --no-cache ca-certificates curl tzdata jq && apk upgrade --no-cache
 
 WORKDIR /app
 
+# Create necessary directories for config and database storage
+RUN mkdir -p /app/config /app/data
+
 COPY --from=app-builder /src/bin/syncyomi /usr/local/bin/
 
-# Copy config.yaml directly into /app
-COPY config.yaml /app/config.yaml
-
-VOLUME /config
+# Copy config.toml into the config directory
+COPY config.toml /app/config/config.toml
 
 EXPOSE 8282
 
-ENTRYPOINT ["/usr/local/bin/syncyomi", "--config", "/app/config.yaml"]
+ENTRYPOINT ["/usr/local/bin/syncyomi", "--config", "/app/config"]
