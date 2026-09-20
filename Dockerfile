@@ -54,14 +54,13 @@ RUN apk add --no-cache ca-certificates curl tzdata jq && apk upgrade --no-cache
 
 WORKDIR /app
 
-VOLUME /config
-
 COPY --from=app-builder /src/bin/syncyomi /usr/local/bin/
 
-# Copy config.yaml into the expected /config directory
-RUN mkdir -p /config
-COPY config.yaml /config/config.yaml
+# Copy config.yaml directly into /app
+COPY config.yaml /app/config.yaml
+
+VOLUME /config
 
 EXPOSE 8282
 
-ENTRYPOINT ["/usr/local/bin/syncyomi", "--config", "/config"]
+ENTRYPOINT ["/usr/local/bin/syncyomi", "--config", "/app/config.yaml"]
