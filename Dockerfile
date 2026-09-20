@@ -58,6 +58,10 @@ VOLUME /config
 
 COPY --from=app-builder /src/bin/syncyomi /usr/local/bin/
 
+# Copy config.yaml into the expected /config directory
+RUN mkdir -p /config
+COPY config.yaml /config/config.yaml
+
 EXPOSE 8282
 
 ENTRYPOINT ["/usr/local/bin/syncyomi", "--config", "/config"]
